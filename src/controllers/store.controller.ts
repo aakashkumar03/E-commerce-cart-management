@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { addToCart ,checkout} from '../services/store.services';
+import { addToCart ,checkout ,getAdminStats} from '../services/store.services';
 
 export const handleAddToCart = (req: Request, res: Response): void => {
   try {
@@ -23,13 +23,23 @@ export const handleAddToCart = (req: Request, res: Response): void => {
 export const handleCheckout = (req: Request, res: Response): void => {
   try {
     const { userId, couponCode } = req.body;
+
+    // validation check for userId
     if (!userId) {
        res.status(400).json({ error: 'UserId required for checkout transaction' });
        return;
     }
+
+    // checkout all the product in cart , if providing a valid coupon gets applied 
     const order = checkout(userId, couponCode);
     res.status(201).json({ message: 'Order completed successfully', order });
   } catch (error: any) {
     res.status(400).json({ error: error.message });
   }
+};
+
+export const handleGetStats = (_req: Request, res: Response): void => {
+  //collecting all the details
+  const stats = getAdminStats();
+  res.status(200).json(stats);
 };
