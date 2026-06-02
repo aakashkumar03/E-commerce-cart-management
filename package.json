@@ -1,0 +1,26 @@
+{
+  "name": "ecom-store-management",
+  "version": "1.0.0",
+  "description": "Ecom cart management implementation",
+  "license": "ISC",
+  "author": "Akash kumar sahu",
+  "type": "module",
+  "main": "src/app.ts",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/app.js",
+    "dev": "tsx src/app.ts",
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.21",
+    "@types/jest": "^29.5.14",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.1.2",
+    "tsx": "^4.7.1",
+    "typescript": "^5.4.5"
+  }
+}
