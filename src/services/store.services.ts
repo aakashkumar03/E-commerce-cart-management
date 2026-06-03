@@ -73,25 +73,6 @@ export function checkout(userId: string, couponCode?: string): Order {
   // Clear out the active user's cart state
   carts.set(userId, { items: [] }); 
 
-  const nextOrderNumber = orders.length + 1;
-  
-  // If the upcoming order matchs to the nth order,then coupon code automatically generated
-  if (nextOrderNumber % NTH_ORDER === 0) {
-    const generatedCode = `BUMBER_OFFER${nextOrderNumber}_${Math.random().toString(36).substring(2, 5).toUpperCase()}`;
-    
-    // new coupon details
-    const newCoupon: Coupon = {
-      code: generatedCode,
-      discountPercentage: DISCOUNT_PERCENTAGE,
-      isUsed: false
-    };
-    
-    // coupon added
-    coupons.set(generatedCode, newCoupon);
-    console.log(`Milestone approach detected! Created coupon: ${generatedCode}`);
-  }
-
-
   return newOrder;
 }
 
@@ -112,6 +93,32 @@ export function getAdminStats(): AdminStats {
     totalItemsPurchased,
     totalRevenue: parseFloat(totalRevenue.toFixed(2)),
     discountCodes: Array.from(coupons.values()),
-    totalDiscountAmount: parseFloat(totalDiscountAmount.toFixed(2))
+    totalDiscountAmount: parseFloat(totalDiscountAmount.toFixed(2)),
+    totalOrders: orders.length
   };
+}
+
+// Reseting this values
+export function resetSystemState(): void {
+  carts.clear();
+  orders.length = 0;
+  coupons.clear();
+}
+
+export function generateDiscountCode(): Coupon {
+  const nextOrderNumber = orders.length + 1;
+  
+  if (nextOrderNumber % NTH_ORDER !== 0) {
+    throw new Error(`Better luck next time`);
+  }
+
+  const generatedCode = `BUMPER_OFFER${nextOrderNumber}_${Math.random().toString(36).substring(2, 5).toUpperCase()}`;
+  const newCoupon: Coupon = {
+    code: generatedCode,
+    discountPercentage: DISCOUNT_PERCENTAGE,
+    isUsed: false
+  };
+
+  coupons.set(generatedCode, newCoupon);
+  return newCoupon;
 }

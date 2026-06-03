@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { addToCart ,checkout ,getAdminStats} from '../services/store.services';
+import { addToCart ,checkout ,getAdminStats ,generateDiscountCode} from '../services/store.services';
 
 export const handleAddToCart = (req: Request, res: Response): void => {
   try {
@@ -42,4 +42,13 @@ export const handleGetStats = (_req: Request, res: Response): void => {
   //collecting all the details
   const stats = getAdminStats();
   res.status(200).json(stats);
+};
+
+export const handleGenerateDiscount = (_req: Request, res: Response): void => {
+  try {
+    const coupon = generateDiscountCode();
+    res.status(201).json({ message: 'Coupon generated successfully', coupon });
+  } catch (error: any) {
+    res.status(400).json({ error: error.message });
+  }
 };

@@ -28,4 +28,5 @@ export interface AdminStats {
   totalRevenue: number;
   discountCodes: Coupon[];
   totalDiscountAmount: number;
+  totalOrders: number;
 }
